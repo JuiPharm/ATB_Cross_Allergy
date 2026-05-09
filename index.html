@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="BHH Cross Allergy Checker - GitHub Pages static web application for beta-lactam antibiotic cross-allergy screening." />
+  <title>BHH Cross Allergy Checker</title>
+
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="stylesheet" href="https://unpkg.com/vis-network/styles/vis-network.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">ข้ามไปยังเนื้อหาหลัก</a>
+
+  <header class="app-header">
+    <nav class="topbar container">
+      <a class="brand" href="#" aria-label="BHH Cross Allergy Checker">
+        <img id="brandLogo" src="https://img1.pic.in.th/images/images-2eba80f80560d4743.jpg" alt="Hospital logo" onerror="this.style.display='none'">
+        <span>
+          <strong>BHH Cross Allergy Checker</strong>
+          <small>Beta-lactam antibiotic screening support</small>
+        </span>
+      </a>
+
+      <div class="status-pill" id="dataStatus" role="status" aria-live="polite">
+        <span class="status-dot"></span>
+        กำลังโหลดฐานข้อมูล
+      </div>
+    </nav>
+
+    <section class="hero container">
+      <div class="hero-copy">
+        <span class="eyebrow">Medication Safety Tool</span>
+        <h1>ตรวจสอบการแพ้ยาข้ามกลุ่ม Antibiotic แบบรวดเร็ว</h1>
+        <p>
+          พิมพ์ชื่อยาที่ผู้ป่วยมีประวัติแพ้ ระบบจะแสดงรายการที่ควรหลีกเลี่ยงและรายการที่ระบุว่า considered safe จากฐานข้อมูลที่เตรียมไว้
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-scroll-to="checkerCard">เริ่มตรวจสอบ</button>
+          <button class="btn btn-ghost" data-view-target="reference">ดูนิยามรหัส X1-X5</button>
+        </div>
+      </div>
+
+      <aside class="hero-panel" aria-label="Database summary">
+        <div class="metric">
+          <span id="metricDrugs">—</span>
+          <small>รายการยา</small>
+        </div>
+        <div class="metric">
+          <span id="metricRelations">—</span>
+          <small>คู่ความสัมพันธ์</small>
+        </div>
+        <div class="metric danger">
+          <span id="metricDanger">—</span>
+          <small>DO NOT PRESCRIBE</small>
+        </div>
+        <div class="metric safe">
+          <span id="metricSafe">—</span>
+          <small>CONSIDERED SAFE</small>
+        </div>
+      </aside>
+    </section>
+  </header>
+
+  <main id="mainContent" class="container app-main">
+    <section class="clinical-alert">
+      <div class="alert-icon">!</div>
+      <div>
+        <h2>ข้อควรระวังขั้นสูงสุด</h2>
+        <p>
+          หากผู้ป่วยมีประวัติแพ้รุนแรง เช่น ICU admission related to allergy, SJS/TEN, DRESS, AGEP, exfoliative dermatitis,
+          interstitial nephritis, hepatitis หรือ hemolytic anemia ให้หลีกเลี่ยง beta-lactam antibiotic ทั้งหมดตามแนวทางของโรงพยาบาล
+          และปรึกษาแพทย์/เภสัชกรก่อนสั่งใช้ยา
+        </p>
+      </div>
+    </section>
+
+    <section id="checkerCard" class="checker-card">
+      <div class="section-heading">
+        <span class="section-kicker">Step 1</span>
+        <h2>ระบุยาที่ผู้ป่วยแพ้</h2>
+        <p>รองรับการค้นหาแบบ exact match และพิมพ์บางส่วน เช่น “amox”, “cef”, “mero”</p>
+      </div>
+
+      <div class="search-grid">
+        <div class="search-box">
+          <label for="drugInput">ชื่อยา / Drug name</label>
+          <div class="input-wrap">
+            <input id="drugInput" type="search" list="drugDatalist" placeholder="เช่น AMOXICILLIN" autocomplete="off" spellcheck="false" />
+            <datalist id="drugDatalist"></datalist>
+            <button class="btn btn-primary" id="searchBtn" type="button">ตรวจสอบ</button>
+          </div>
+          <div id="suggestionPanel" class="suggestions" aria-live="polite"></div>
+        </div>
+
+        <div class="quick-actions">
+          <button class="btn btn-soft" id="clearBtn" type="button">ล้างผลลัพธ์</button>
+          <button class="btn btn-soft" id="copyBtn" type="button" disabled>Copy summary</button>
+          <button class="btn btn-soft" id="csvBtn" type="button" disabled>Export CSV</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultSection" class="result-section is-hidden" aria-live="polite">
+      <div class="result-header">
+        <div>
+          <span class="section-kicker">Step 2</span>
+          <h2>ผลการตรวจสอบ: <span id="selectedDrug">—</span></h2>
+        </div>
+        <div class="result-badges">
+          <span class="badge danger" id="dangerCount">0 ห้ามใช้</span>
+          <span class="badge safe" id="safeCount">0 ใช้ได้</span>
+        </div>
+      </div>
+
+      <div id="decisionBanner" class="decision-banner"></div>
+
+      <div class="result-grid">
+        <article class="result-card danger-card">
+          <div class="card-title">
+            <span class="icon danger">×</span>
+            <div>
+              <h3>DO NOT PRESCRIBE</h3>
+              <p>รายการที่ควรหลีกเลี่ยงจากข้อมูลความสัมพันธ์</p>
+            </div>
+          </div>
+          <div id="dangerList" class="drug-list"></div>
+        </article>
+
+        <article class="result-card safe-card">
+          <div class="card-title">
+            <span class="icon safe">✓</span>
+            <div>
+              <h3>CONSIDERED SAFE</h3>
+              <p>รายการที่มีโครงสร้างแตกต่างกันตามฐานข้อมูล</p>
+            </div>
+          </div>
+          <div id="safeList" class="drug-list"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="tabs-card">
+      <div class="tab-nav" role="tablist" aria-label="Application views">
+        <button class="tab-button is-active" data-view-target="database" role="tab" aria-selected="true">ฐานข้อมูล</button>
+        <button class="tab-button" data-view-target="graph" role="tab" aria-selected="false">Graph ความสัมพันธ์</button>
+        <button class="tab-button" data-view-target="reference" role="tab" aria-selected="false">นิยามและคำแนะนำ</button>
+      </div>
+
+      <section class="tab-panel is-active" id="view-database" role="tabpanel">
+        <div class="toolbar">
+          <div>
+            <h2>ตารางความสัมพันธ์ทั้งหมด</h2>
+            <p>ค้นหาได้ทั้ง drug A, drug B, result และ description</p>
+          </div>
+          <div class="toolbar-controls">
+            <input id="tableFilter" type="search" placeholder="Filter table..." />
+            <select id="statusFilter" aria-label="Filter by result code">
+              <option value="ALL">ทั้งหมด</option>
+              <option value="DO_NOT_PRESCRIBE">DO NOT PRESCRIBE</option>
+              <option value="CONSIDERED_SAFE">CONSIDERED SAFE</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Drug A</th>
+                <th>Drug B</th>
+                <th>Result</th>
+                <th>Clinical action</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody id="relationshipTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="view-graph" role="tabpanel">
+        <div class="toolbar">
+          <div>
+            <h2>Graph ความสัมพันธ์</h2>
+            <p>คลิก node เพื่อดูความสัมพันธ์ของยานั้น ระบบจะ sync กับผลการตรวจสอบด้านบน</p>
+          </div>
+          <div class="toolbar-controls">
+            <button class="btn btn-soft" id="fitGraphBtn" type="button">Fit graph</button>
+            <button class="btn btn-soft" id="resetGraphBtn" type="button">Reset highlight</button>
+          </div>
+        </div>
+        <div id="graphContainer" class="graph-container">
+          <div class="graph-loading">กำลังเตรียม graph...</div>
+        </div>
+        <div class="legend-row">
+          <span><i class="legend-line danger-line"></i> DO NOT PRESCRIBE</span>
+          <span><i class="legend-line safe-line"></i> CONSIDERED SAFE</span>
+          <span><i class="legend-node"></i> Selected drug</span>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="view-reference" role="tabpanel">
+        <div class="reference-grid">
+          <article class="reference-card">
+            <h2>Legend รหัสความเสี่ยง</h2>
+            <dl class="legend-list">
+              <div>
+                <dt class="code-safe">SAFE</dt>
+                <dd>Different structure - considered safe to prescribe</dd>
+              </div>
+              <div>
+                <dt class="code-danger">X1</dt>
+                <dd>Same side chain - clinical evidence of cross reaction</dd>
+              </div>
+              <div>
+                <dt class="code-danger">X2</dt>
+                <dd>Same side chain - theoretical risk, no clinical studies</dd>
+              </div>
+              <div>
+                <dt class="code-danger">X3</dt>
+                <dd>Similar side chain - potential for cross reaction</dd>
+              </div>
+              <div>
+                <dt class="code-danger">X4</dt>
+                <dd>Clinical evidence of cross reaction through beta-lactam ring</dd>
+              </div>
+              <div>
+                <dt class="code-danger">X5</dt>
+                <dd>Theoretical beta-lactam ring risk, no clinical studies</dd>
+              </div>
+            </dl>
+          </article>
+
+          <article class="reference-card">
+            <h2>Clinical governance note</h2>
+            <p>
+              ระบบนี้เป็นเครื่องมือช่วยคัดกรองเบื้องต้น ไม่ใช่คำสั่งการรักษาอัตโนมัติ ควรใช้ร่วมกับประวัติอาการแพ้จริง
+              ระยะเวลาที่เกิดอาการ ความรุนแรง รายละเอียดยาเดิม และแนวทางของคณะกรรมการยาหรือทีม AMS/Medication Safety ของโรงพยาบาล
+            </p>
+            <ul class="check-list">
+              <li>ตรวจสอบชื่อสามัญยาและประวัติการแพ้จาก HIS/EMR ก่อนสั่งใช้</li>
+              <li>กรณีประวัติแพ้ไม่ชัดเจน ให้ซักประวัติเพิ่มและบันทึก structured allergy history</li>
+              <li>กรณีแพ้รุนแรง ให้หลีกเลี่ยง beta-lactam ทั้งหมดและปรึกษาผู้เชี่ยวชาญ</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container footer-inner">
+      <span>© 2026 BHH Cross Allergy Checker</span>
+      <span>Static GitHub Pages version • Data source: data/cross_allergy.json</span>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

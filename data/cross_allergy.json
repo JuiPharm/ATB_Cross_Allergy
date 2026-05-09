@@ -1,0 +1,1417 @@
+{
+  "metadata": {
+    "app_name": "BHH Cross Allergy Checker",
+    "version": "1.0.0",
+    "updated_at": "2026-05-09T15:28:11Z",
+    "source": "Converted from uploaded Cross allergy.xlsx",
+    "default_mode": "static-json",
+    "clinical_notice": "For medication safety screening support only. Final prescribing decision must follow hospital policy and clinician/pharmacist judgment."
+  },
+  "stats": {
+    "total_relationships": 171,
+    "total_drugs": 19,
+    "by_result_code": {
+      "DO_NOT_PRESCRIBE": 42,
+      "CONSIDERED_SAFE": 129
+    },
+    "by_result": {
+      "X1": 9,
+      "X5": 8,
+      "X4": 2,
+      "X3": 15,
+      "SAFE": 129,
+      "X2": 8
+    }
+  },
+  "drugs": [
+    "AMOXICILLIN",
+    "AMPICILLIN",
+    "CEFADROXIL",
+    "CEFAZOLIN",
+    "CEFEPIME",
+    "CEFIXIME",
+    "CEFOTAXIME",
+    "CEFOXITIN",
+    "CEFPROZIL",
+    "CEFTAZIDIME",
+    "CEFTRIAXONE",
+    "CEFUROXIME",
+    "CEPHALEXIN",
+    "CLOXACILLIN",
+    "ERTAPENEM",
+    "IMIPENEM",
+    "MEROPENEM",
+    "PENICILLIN",
+    "PIPERACILLIN"
+  ],
+  "relationships": [
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "AMPICILLIN",
+      "result": "X1",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - clinical evidence of cross reaction",
+      "id": "rel-001"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CLOXACILLIN",
+      "result": "X5",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Theoretical risk of cross reaction no clinical studies (beta-lactam ring)",
+      "id": "rel-002"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "PENICILLIN",
+      "result": "X4",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Clinical evidence of cross reaction (beta-lactam ring)",
+      "id": "rel-003"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "PIPERACILLIN",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-004"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFADROXIL",
+      "result": "X1",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - clinical evidence of cross reaction",
+      "id": "rel-005"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFAZOLIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-006"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEPHALEXIN",
+      "result": "X1",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - clinical evidence of cross reaction",
+      "id": "rel-007"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFOXITIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-008"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFPROZIL",
+      "result": "X2",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - Theoretical risk no clinical studies",
+      "id": "rel-009"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFUROXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-010"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-011"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-012"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-013"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-014"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-015"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-016"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-017"
+    },
+    {
+      "drug_a": "AMOXICILLIN",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-018"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CLOXACILLIN",
+      "result": "X5",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Theoretical risk of cross reaction no clinical studies (beta-lactam ring)",
+      "id": "rel-019"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "PENICILLIN",
+      "result": "X4",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Clinical evidence of cross reaction (beta-lactam ring)",
+      "id": "rel-020"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "PIPERACILLIN",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-021"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFADROXIL",
+      "result": "X2",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - Theoretical risk no clinical studies",
+      "id": "rel-022"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFAZOLIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-023"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEPHALEXIN",
+      "result": "X2",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - Theoretical risk no clinical studies",
+      "id": "rel-024"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFOXITIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-025"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFPROZIL",
+      "result": "X2",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - Theoretical risk no clinical studies",
+      "id": "rel-026"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFUROXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-027"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-028"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-029"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-030"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-031"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-032"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-033"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-034"
+    },
+    {
+      "drug_a": "AMPICILLIN",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-035"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "PENICILLIN",
+      "result": "X5",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Theoretical risk of cross reaction no clinical studies (beta-lactam ring)",
+      "id": "rel-036"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "PIPERACILLIN",
+      "result": "X5",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Theoretical risk of cross reaction no clinical studies (beta-lactam ring)",
+      "id": "rel-037"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFADROXIL",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-038"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFAZOLIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-039"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEPHALEXIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-040"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFOXITIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-041"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFPROZIL",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-042"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFUROXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-043"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-044"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-045"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-046"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-047"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-048"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-049"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-050"
+    },
+    {
+      "drug_a": "CLOXACILLIN",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-051"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "PIPERACILLIN",
+      "result": "X5",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Theoretical risk of cross reaction no clinical studies (beta-lactam ring)",
+      "id": "rel-052"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFADROXIL",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-053"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFAZOLIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-054"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEPHALEXIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-055"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFOXITIN",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-056"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFPROZIL",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-057"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFUROXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-058"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-059"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-060"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-061"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-062"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-063"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-064"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-065"
+    },
+    {
+      "drug_a": "PENICILLIN",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-066"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFADROXIL",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-067"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFAZOLIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-068"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEPHALEXIN",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-069"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFOXITIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-070"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFPROZIL",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-071"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFUROXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-072"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-073"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-074"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-075"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-076"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-077"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-078"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-079"
+    },
+    {
+      "drug_a": "PIPERACILLIN",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-080"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEFAZOLIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-081"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEPHALEXIN",
+      "result": "X1",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - clinical evidence of cross reaction",
+      "id": "rel-082"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEFOXITIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-083"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEFPROZIL",
+      "result": "X2",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - Theoretical risk no clinical studies",
+      "id": "rel-084"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEFUROXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-085"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-086"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-087"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-088"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-089"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-090"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-091"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-092"
+    },
+    {
+      "drug_a": "CEFADROXIL",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-093"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "CEPHALEXIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-094"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "CEFOXITIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-095"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "CEFPROZIL",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-096"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "CEFUROXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-097"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-098"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-099"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-100"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-101"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-102"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-103"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-104"
+    },
+    {
+      "drug_a": "CEFAZOLIN",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-105"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "CEFOXITIN",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-106"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "CEFPROZIL",
+      "result": "X2",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - Theoretical risk no clinical studies",
+      "id": "rel-107"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "CEFUROXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-108"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-109"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-110"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-111"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-112"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-113"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-114"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-115"
+    },
+    {
+      "drug_a": "CEPHALEXIN",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-116"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "CEFPROZIL",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-117"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "CEFUROXIME",
+      "result": "X2",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - Theoretical risk no clinical studies",
+      "id": "rel-118"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-119"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-120"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-121"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-122"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-123"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-124"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-125"
+    },
+    {
+      "drug_a": "CEFOXITIN",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-126"
+    },
+    {
+      "drug_a": "CEFPROZIL",
+      "drug_b": "CEFUROXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-127"
+    },
+    {
+      "drug_a": "CEFPROZIL",
+      "drug_b": "CEFIXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-128"
+    },
+    {
+      "drug_a": "CEFPROZIL",
+      "drug_b": "CEFOTAXIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-129"
+    },
+    {
+      "drug_a": "CEFPROZIL",
+      "drug_b": "CEFTAZIDIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-130"
+    },
+    {
+      "drug_a": "CEFPROZIL",
+      "drug_b": "CEFTRIAXONE",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-131"
+    },
+    {
+      "drug_a": "CEFPROZIL",
+      "drug_b": "CEFEPIME",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-132"
+    },
+    {
+      "drug_a": "CEFPROZIL",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-133"
+    },
+    {
+      "drug_a": "CEFPROZIL",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-134"
+    },
+    {
+      "drug_a": "CEFPROZIL",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-135"
+    },
+    {
+      "drug_a": "CEFUROXIME",
+      "drug_b": "CEFIXIME",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-136"
+    },
+    {
+      "drug_a": "CEFUROXIME",
+      "drug_b": "CEFOTAXIME",
+      "result": "X1",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - clinical evidence of cross reaction",
+      "id": "rel-137"
+    },
+    {
+      "drug_a": "CEFUROXIME",
+      "drug_b": "CEFTAZIDIME",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-138"
+    },
+    {
+      "drug_a": "CEFUROXIME",
+      "drug_b": "CEFTRIAXONE",
+      "result": "X1",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - clinical evidence of cross reaction",
+      "id": "rel-139"
+    },
+    {
+      "drug_a": "CEFUROXIME",
+      "drug_b": "CEFEPIME",
+      "result": "X2",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - Theoretical risk no clinical studies",
+      "id": "rel-140"
+    },
+    {
+      "drug_a": "CEFUROXIME",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-141"
+    },
+    {
+      "drug_a": "CEFUROXIME",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-142"
+    },
+    {
+      "drug_a": "CEFUROXIME",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-143"
+    },
+    {
+      "drug_a": "CEFIXIME",
+      "drug_b": "CEFOTAXIME",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-144"
+    },
+    {
+      "drug_a": "CEFIXIME",
+      "drug_b": "CEFTAZIDIME",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-145"
+    },
+    {
+      "drug_a": "CEFIXIME",
+      "drug_b": "CEFTRIAXONE",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-146"
+    },
+    {
+      "drug_a": "CEFIXIME",
+      "drug_b": "CEFEPIME",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-147"
+    },
+    {
+      "drug_a": "CEFIXIME",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-148"
+    },
+    {
+      "drug_a": "CEFIXIME",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-149"
+    },
+    {
+      "drug_a": "CEFIXIME",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-150"
+    },
+    {
+      "drug_a": "CEFOTAXIME",
+      "drug_b": "CEFTAZIDIME",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-151"
+    },
+    {
+      "drug_a": "CEFOTAXIME",
+      "drug_b": "CEFTRIAXONE",
+      "result": "X1",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - clinical evidence of cross reaction",
+      "id": "rel-152"
+    },
+    {
+      "drug_a": "CEFOTAXIME",
+      "drug_b": "CEFEPIME",
+      "result": "X1",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - clinical evidence of cross reaction",
+      "id": "rel-153"
+    },
+    {
+      "drug_a": "CEFOTAXIME",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-154"
+    },
+    {
+      "drug_a": "CEFOTAXIME",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-155"
+    },
+    {
+      "drug_a": "CEFOTAXIME",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-156"
+    },
+    {
+      "drug_a": "CEFTAZIDIME",
+      "drug_b": "CEFTRIAXONE",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-157"
+    },
+    {
+      "drug_a": "CEFTAZIDIME",
+      "drug_b": "CEFEPIME",
+      "result": "X3",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Similar side chain - Potential for cross reaction",
+      "id": "rel-158"
+    },
+    {
+      "drug_a": "CEFTAZIDIME",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-159"
+    },
+    {
+      "drug_a": "CEFTAZIDIME",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-160"
+    },
+    {
+      "drug_a": "CEFTAZIDIME",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-161"
+    },
+    {
+      "drug_a": "CEFTRIAXONE",
+      "drug_b": "CEFEPIME",
+      "result": "X1",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Same side chain - clinical evidence of cross reaction",
+      "id": "rel-162"
+    },
+    {
+      "drug_a": "CEFTRIAXONE",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-163"
+    },
+    {
+      "drug_a": "CEFTRIAXONE",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-164"
+    },
+    {
+      "drug_a": "CEFTRIAXONE",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-165"
+    },
+    {
+      "drug_a": "CEFEPIME",
+      "drug_b": "ERTAPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-166"
+    },
+    {
+      "drug_a": "CEFEPIME",
+      "drug_b": "IMIPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-167"
+    },
+    {
+      "drug_a": "CEFEPIME",
+      "drug_b": "MEROPENEM",
+      "result": "SAFE",
+      "result_code": "CONSIDERED_SAFE",
+      "description": "Different structure - considered safe to prescribe",
+      "id": "rel-168"
+    },
+    {
+      "drug_a": "ERTAPENEM",
+      "drug_b": "IMIPENEM",
+      "result": "X5",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Theoretical risk of cross reaction no clinical studies (beta-lactam ring)",
+      "id": "rel-169"
+    },
+    {
+      "drug_a": "ERTAPENEM",
+      "drug_b": "MEROPENEM",
+      "result": "X5",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Theoretical risk of cross reaction no clinical studies (beta-lactam ring)",
+      "id": "rel-170"
+    },
+    {
+      "drug_a": "IMIPENEM",
+      "drug_b": "MEROPENEM",
+      "result": "X5",
+      "result_code": "DO_NOT_PRESCRIBE",
+      "description": "Theoretical risk of cross reaction no clinical studies (beta-lactam ring)",
+      "id": "rel-171"
+    }
+  ]
+}
