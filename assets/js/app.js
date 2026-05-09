@@ -31,6 +31,8 @@
 
   const els = {
     dataStatus: $("#dataStatus"),
+    statusText: $("#statusText"),
+    lastUpdatedText: $("#lastUpdatedText"),
     metricDrugs: $("#metricDrugs"),
     metricRelations: $("#metricRelations"),
     metricDanger: $("#metricDanger"),
@@ -107,7 +109,8 @@
     els.dataStatus.classList.remove("is-ready", "is-error");
     if (mode === "ready") els.dataStatus.classList.add("is-ready");
     if (mode === "error") els.dataStatus.classList.add("is-error");
-    els.dataStatus.lastChild.nodeValue = ` ${message}`;
+    if (els.statusText) els.statusText.textContent = message;
+    else els.dataStatus.textContent = message;
   }
 
   function showToast(message) {
@@ -133,6 +136,7 @@
       state.drugs = normalized.drugs;
 
       hydrateMetrics(normalized);
+      hydrateMetadata(normalized);
       hydrateDatalist();
       renderSuggestions("");
       renderRelationshipTable();
@@ -253,6 +257,24 @@
     els.metricRelations.textContent = payload.relationships.length.toLocaleString("th-TH");
     els.metricDanger.textContent = dangerCount.toLocaleString("th-TH");
     els.metricSafe.textContent = safeCount.toLocaleString("th-TH");
+  }
+
+
+  function hydrateMetadata(payload) {
+    if (!els.lastUpdatedText) return;
+    const raw = payload.metadata && payload.metadata.updated_at;
+    if (!raw) {
+      els.lastUpdatedText.textContent = "Static database";
+      return;
+    }
+
+    const parsed = new Date(raw);
+    if (Number.isNaN(parsed.getTime())) {
+      els.lastUpdatedText.textContent = `Updated: ${raw}`;
+      return;
+    }
+
+    els.lastUpdatedText.textContent = `Updated ${parsed.toLocaleDateString("th-TH", { year: "numeric", month: "short", day: "numeric" })}`;
   }
 
   function hydrateDatalist() {
@@ -404,7 +426,7 @@
           createElement("span", { class: `badge ${type}`, text: code }),
           createElement("span", { text: item.result_code }),
         ]),
-        createElement("div", { text: item.description || "ไม่มีคำอธิบาย" }),
+        createElement("div", { class: "drug-item-description", text: item.description || "ไม่มีคำอธิบาย" }),
       ]);
       container.appendChild(row);
     });
@@ -424,22 +446,22 @@
 
     filtered.forEach((row) => {
       const tr = createElement("tr", {}, [
-        createElement("td", { text: row.drug_a }),
-        createElement("td", { text: row.drug_b }),
-        createElement("td", {}, [
+        createElement("td", { "data-label": "Drug A", text: row.drug_a }),
+        createElement("td", { "data-label": "Drug B", text: row.drug_b }),
+        createElement("td", { "data-label": "Result" }, [
           createElement("span", { class: `badge ${isDanger(row) ? "danger" : "safe"}`, text: displayCode(row) }),
         ]),
-        createElement("td", {}, [
+        createElement("td", { "data-label": "Clinical action" }, [
           createElement("span", { class: `badge ${isDanger(row) ? "danger" : "safe"}`, text: row.result_code }),
         ]),
-        createElement("td", { text: row.description }),
+        createElement("td", { "data-label": "Description", text: row.description }),
       ]);
       els.relationshipTable.appendChild(tr);
     });
 
     if (!filtered.length) {
       const tr = createElement("tr", {}, [
-        createElement("td", { colspan: "5", text: "ไม่พบข้อมูลตาม filter ที่ระบุ" }),
+        createElement("td", { colspan: "5", "data-label": "Status", text: "ไม่พบข้อมูลตาม filter ที่ระบุ" }),
       ]);
       els.relationshipTable.appendChild(tr);
     }
