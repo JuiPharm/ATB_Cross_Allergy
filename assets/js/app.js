@@ -25,6 +25,7 @@
     nodes: null,
     edges: null,
     graphReady: false,
+    graphMode: "overview",
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -57,6 +58,17 @@
     graphContainer: $("#graphContainer"),
     fitGraphBtn: $("#fitGraphBtn"),
     resetGraphBtn: $("#resetGraphBtn"),
+    overviewGraphBtn: $("#overviewGraphBtn"),
+    graphDrugSelect: $("#graphDrugSelect"),
+    focusGraphBtn: $("#focusGraphBtn"),
+    graphSelectedDrug: $("#graphSelectedDrug"),
+    graphClinicalNote: $("#graphClinicalNote"),
+    graphDangerCount: $("#graphDangerCount"),
+    graphSafeCount: $("#graphSafeCount"),
+    graphDangerList: $("#graphDangerList"),
+    graphSafeList: $("#graphSafeList"),
+    graphSendToSearchBtn: $("#graphSendToSearchBtn"),
+    graphModeHint: $("#graphModeHint"),
     toast: $("#toast"),
   };
 
@@ -138,6 +150,7 @@
       hydrateMetrics(normalized);
       hydrateMetadata(normalized);
       hydrateDatalist();
+      hydrateGraphDrugSelect();
       renderSuggestions("");
       renderRelationshipTable();
       renderGraph();
@@ -285,6 +298,16 @@
     });
   }
 
+
+  function hydrateGraphDrugSelect() {
+    if (!els.graphDrugSelect) return;
+    els.graphDrugSelect.innerHTML = "";
+    els.graphDrugSelect.appendChild(createElement("option", { value: "", text: "เลือกชื่อยา..." }));
+    state.drugs.forEach((drug) => {
+      els.graphDrugSelect.appendChild(createElement("option", { value: drug, text: drug }));
+    });
+  }
+
   function findMatchingDrugs(query) {
     const q = normalize(query);
     if (!q) return state.drugs.slice(0, 12);
@@ -324,7 +347,14 @@
     }
   }
 
-  function executeSearch(inputValue = els.drugInput.value) {
+  function executeSearch(inputValue = els.drugInput.value, options = {}) {
+    const settings = {
+      scrollResult: true,
+      updateGraph: true,
+      showGraph: false,
+      source: "search",
+      ...options,
+    };
     const rawQuery = normalize(inputValue);
 
     if (!rawQuery) {
@@ -346,7 +376,32 @@
       }
     }
 
-    const results = state.relationships
+    const results = getResultsForDrug(selectedDrug);
+
+    state.currentDrug = selectedDrug;
+    state.currentResults = results;
+    els.drugInput.value = selectedDrug;
+    if (els.graphDrugSelect) els.graphDrugSelect.value = selectedDrug;
+
+    if (settings.source !== "graph") logSearch(selectedDrug);
+    renderResults(selectedDrug, results);
+    renderGraphInspector(selectedDrug, results);
+
+    if (settings.updateGraph) {
+      highlightGraphDrug(selectedDrug);
+    }
+
+    if (settings.showGraph) {
+      showPanel("graph", false);
+    }
+
+    if (settings.scrollResult) {
+      els.resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  function getResultsForDrug(selectedDrug) {
+    return state.relationships
       .map((row) => {
         const otherDrug = relationshipOtherDrug(row, selectedDrug);
         if (!otherDrug) return null;
@@ -362,15 +417,6 @@
         if (riskDelta !== 0) return riskDelta;
         return a.target_drug.localeCompare(b.target_drug);
       });
-
-    state.currentDrug = selectedDrug;
-    state.currentResults = results;
-
-    logSearch(selectedDrug);
-    renderResults(selectedDrug, results);
-    highlightGraphDrug(selectedDrug);
-    showPanel("graph", false);
-    els.resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function renderResults(selectedDrug, results) {
@@ -401,6 +447,58 @@
 
     els.copyBtn.disabled = results.length === 0;
     els.csvBtn.disabled = results.length === 0;
+  }
+
+
+  function renderGraphInspector(selectedDrug, results) {
+    if (!els.graphSelectedDrug) return;
+
+    const dangerItems = results.filter(isDanger);
+    const safeItems = results.filter(isSafe);
+
+    els.graphSelectedDrug.textContent = selectedDrug || "ยังไม่ได้เลือกยา";
+    els.graphDangerCount.textContent = dangerItems.length.toLocaleString("th-TH");
+    els.graphSafeCount.textContent = safeItems.length.toLocaleString("th-TH");
+    els.graphClinicalNote.textContent = selectedDrug
+      ? `Focus view: ${selectedDrug} อยู่ตรงกลาง เส้นสีแดงคือควรหลีกเลี่ยง และเส้นสีเขียวคือรายการที่ฐานข้อมูลระบุว่า considered safe`
+      : "คลิก node หรือเลือกชื่อยาจาก dropdown เพื่อแสดงความสัมพันธ์แบบ focus view";
+
+    if (els.graphDrugSelect) els.graphDrugSelect.value = selectedDrug || "";
+    if (els.graphSendToSearchBtn) els.graphSendToSearchBtn.disabled = !selectedDrug;
+
+    renderMiniRelationList(els.graphDangerList, dangerItems, "danger");
+    renderMiniRelationList(els.graphSafeList, safeItems, "safe");
+  }
+
+  function renderMiniRelationList(container, items, type) {
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (!items.length) {
+      container.appendChild(createElement("div", {
+        class: "mini-empty",
+        text: type === "danger" ? "ไม่พบรายการ DO NOT PRESCRIBE" : "ไม่พบรายการ considered safe",
+      }));
+      return;
+    }
+
+    items.slice(0, 12).forEach((item) => {
+      const mini = createElement("button", { type: "button", class: `mini-relation ${type}` }, [
+        createElement("strong", { text: item.target_drug }),
+        createElement("span", { text: `${displayCode(item)} • ${item.description || "ไม่มีคำอธิบาย"}` }),
+      ]);
+      mini.addEventListener("click", () => {
+        showToast(`${state.currentDrug || item.selected_drug} → ${item.target_drug}: ${displayCode(item)}`);
+      });
+      container.appendChild(mini);
+    });
+
+    if (items.length > 12) {
+      container.appendChild(createElement("div", {
+        class: "mini-more",
+        text: `+ ${items.length - 12} รายการเพิ่มเติม แสดงในผลตรวจสอบด้านบน`,
+      }));
+    }
   }
 
   function renderDrugList(container, items, type) {
@@ -467,6 +565,77 @@
     }
   }
 
+  function getDangerRelationIds() {
+    return new Set(state.relationships.filter(isDanger).map((row) => row.id));
+  }
+
+  function relationBetween(drugA, drugB) {
+    const a = normalize(drugA);
+    const b = normalize(drugB);
+    return state.relationships.find((row) =>
+      (row.drug_a === a && row.drug_b === b) ||
+      (row.drug_a === b && row.drug_b === a)
+    );
+  }
+
+  function circlePoint(index, total, radius, offset = -Math.PI / 2) {
+    const step = (Math.PI * 2) / Math.max(total, 1);
+    const angle = offset + step * index;
+    return { x: Math.cos(angle) * radius, y: Math.sin(angle) * radius };
+  }
+
+  function arcPoint(index, total, startDeg, endDeg, radius) {
+    const span = endDeg - startDeg;
+    const ratio = total <= 1 ? 0.5 : index / (total - 1);
+    const angle = (startDeg + span * ratio) * Math.PI / 180;
+    return { x: Math.cos(angle) * radius, y: Math.sin(angle) * radius };
+  }
+
+  function defaultNodeStyle() {
+    return {
+      shape: "box",
+      margin: { top: 11, right: 14, bottom: 11, left: 14 },
+      color: {
+        background: "#f8fbff",
+        border: COLORS.blue,
+        highlight: { background: "#e8f3ff", border: COLORS.blue },
+      },
+      font: { face: "Segoe UI", size: 15, color: "#142033", bold: { color: "#142033" } },
+      borderWidth: 1.7,
+      shadow: { enabled: true, color: "rgba(7,55,99,.14)", size: 12, x: 0, y: 4 },
+    };
+  }
+
+  function selectedNodeStyle() {
+    return {
+      shape: "box",
+      margin: { top: 16, right: 18, bottom: 16, left: 18 },
+      color: { background: COLORS.blue, border: COLORS.navy, highlight: { background: COLORS.blue, border: COLORS.navy } },
+      font: { face: "Segoe UI", size: 19, color: COLORS.white, bold: { color: COLORS.white } },
+      borderWidth: 3,
+      shadow: { enabled: true, color: "rgba(0,79,159,.42)", size: 24, x: 0, y: 8 },
+    };
+  }
+
+  function relatedNodeStyle(row) {
+    const danger = isDanger(row);
+    return {
+      shape: "box",
+      margin: { top: 10, right: 12, bottom: 10, left: 12 },
+      color: {
+        background: danger ? COLORS.redSoft : COLORS.greenSoft,
+        border: danger ? COLORS.red : COLORS.green,
+        highlight: {
+          background: danger ? COLORS.redSoft : COLORS.greenSoft,
+          border: danger ? COLORS.red : COLORS.green,
+        },
+      },
+      font: { face: "Segoe UI", size: danger ? 15 : 14, color: danger ? COLORS.red : COLORS.green },
+      borderWidth: danger ? 2.4 : 1.8,
+      shadow: { enabled: true, color: danger ? "rgba(220,38,38,.20)" : "rgba(21,128,61,.16)", size: 12, x: 0, y: 4 },
+    };
+  }
+
   function renderGraph() {
     if (!window.vis || !state.relationships.length) {
       els.graphContainer.innerHTML = '<div class="graph-loading">ไม่สามารถโหลด graph library ได้ แต่ยังใช้ search/table ได้ตามปกติ</div>';
@@ -475,21 +644,22 @@
 
     els.graphContainer.innerHTML = "";
 
+    const radius = 460;
     const nodes = new window.vis.DataSet(
-      state.drugs.map((drug) => ({
-        id: drug,
-        label: drug,
-        shape: "box",
-        margin: 12,
-        color: {
-          background: "#f8fbff",
-          border: COLORS.blue,
-          highlight: { background: COLORS.blue, border: COLORS.navy },
-        },
-        font: { face: "Segoe UI", size: 15, color: "#142033", bold: { color: "#142033" } },
-      }))
+      state.drugs.map((drug, index) => {
+        const point = circlePoint(index, state.drugs.length, radius);
+        return {
+          id: drug,
+          label: drug,
+          x: point.x,
+          y: point.y,
+          fixed: true,
+          ...defaultNodeStyle(),
+        };
+      })
     );
 
+    const dangerIds = getDangerRelationIds();
     const edges = new window.vis.DataSet(
       state.relationships.map((row) => {
         const danger = isDanger(row);
@@ -497,151 +667,197 @@
           id: row.id,
           from: row.drug_a,
           to: row.drug_b,
-          width: danger ? 3 : 1.6,
+          hidden: !danger,
+          width: danger ? 3.2 : 1.4,
           color: {
             color: danger ? COLORS.red : COLORS.green,
             highlight: danger ? COLORS.red : COLORS.green,
             hover: danger ? COLORS.red : COLORS.green,
           },
           title: `${row.drug_a} ↔ ${row.drug_b}<br>${displayCode(row)}: ${row.description}`,
-          smooth: { type: "continuous", roundness: 0.22 },
+          smooth: { enabled: true, type: "dynamic", roundness: danger ? 0.18 : 0.08 },
+          arrows: { to: { enabled: false } },
         };
       })
     );
 
     const options = {
       autoResize: true,
-      nodes: {
-        borderWidth: 1.6,
-        shadow: { enabled: true, color: "rgba(7,55,99,.16)", size: 12, x: 0, y: 4 },
-      },
-      edges: {
-        selectionWidth: 4,
-      },
+      nodes: { borderWidth: 1.6 },
+      edges: { selectionWidth: 5, hoverWidth: 3 },
       interaction: {
         hover: true,
         tooltipDelay: 80,
         navigationButtons: true,
         keyboard: true,
+        dragView: true,
+        zoomView: true,
       },
-      physics: {
-        solver: "forceAtlas2Based",
-        forceAtlas2Based: {
-          gravitationalConstant: -54,
-          centralGravity: 0.012,
-          springLength: 168,
-          springConstant: 0.075,
-          avoidOverlap: 0.74,
-        },
-        stabilization: {
-          enabled: true,
-          iterations: 260,
-          fit: true,
-        },
-      },
-      layout: { randomSeed: 52 },
+      physics: false,
+      layout: { improvedLayout: false },
     };
 
     state.nodes = nodes;
     state.edges = edges;
     state.network = new window.vis.Network(els.graphContainer, { nodes, edges }, options);
     state.graphReady = true;
+    state.graphMode = "overview";
 
-    state.network.once("stabilizationIterationsDone", () => {
-      state.network.setOptions({ physics: false });
-      state.network.fit({ animation: { duration: 500, easingFunction: "easeInOutQuad" } });
+    renderGraphInspector(null, []);
+    updateGraphModeHint("overview");
+
+    state.network.once("afterDrawing", () => {
+      state.network.fit({ animation: { duration: 450, easingFunction: "easeInOutQuad" } });
     });
 
     state.network.on("click", (params) => {
       if (params.nodes && params.nodes.length) {
         const drug = params.nodes[0];
         els.drugInput.value = drug;
-        executeSearch(drug);
+        executeSearch(drug, { source: "graph", scrollResult: false, updateGraph: true, showGraph: false });
+        showToast(`Focus graph: ${drug}`);
       }
     });
+  }
+
+  function updateGraphModeHint(mode, drug = "") {
+    if (!els.graphModeHint) return;
+    if (mode === "focus") {
+      els.graphModeHint.innerHTML = `<strong>Focus view: ${drug}</strong><span>คลิก node อื่นเพื่อเปลี่ยนยาหลัก แผงด้านซ้ายจะอัปเดตทันทีโดยไม่พาออกจากหน้า graph</span>`;
+      return;
+    }
+    els.graphModeHint.innerHTML = "<strong>Overview risk map</strong><span>แสดงเฉพาะเส้น DO NOT PRESCRIBE เพื่อลด visual clutter จากคู่ความสัมพันธ์ทั้งหมด</span>";
+  }
+
+  function layoutFocusGraph(selectedDrug, results) {
+    const dangerItems = results.filter(isDanger);
+    const safeItems = results.filter(isSafe);
+    const updates = [];
+
+    updates.push({
+      id: selectedDrug,
+      x: 0,
+      y: 0,
+      fixed: true,
+      ...selectedNodeStyle(),
+    });
+
+    dangerItems.forEach((row, index) => {
+      const point = arcPoint(index, dangerItems.length, 130, 230, 390);
+      updates.push({
+        id: row.target_drug,
+        x: point.x,
+        y: point.y,
+        fixed: true,
+        ...relatedNodeStyle(row),
+      });
+    });
+
+    const firstRing = safeItems.length <= 8 ? safeItems.length : Math.ceil(safeItems.length / 2);
+    safeItems.forEach((row, index) => {
+      const ringIndex = index < firstRing ? index : index - firstRing;
+      const ringTotal = index < firstRing ? firstRing : safeItems.length - firstRing;
+      const radius = index < firstRing ? 390 : 570;
+      const point = arcPoint(ringIndex, ringTotal, -62, 62, radius);
+      updates.push({
+        id: row.target_drug,
+        x: point.x,
+        y: point.y,
+        fixed: true,
+        ...relatedNodeStyle(row),
+      });
+    });
+
+    const visibleIds = new Set([selectedDrug, ...results.map((row) => row.target_drug)]);
+    state.drugs.forEach((drug) => {
+      if (visibleIds.has(drug)) return;
+      const point = circlePoint(updates.length, state.drugs.length, 650);
+      updates.push({
+        id: drug,
+        x: point.x,
+        y: point.y,
+        fixed: true,
+        color: { background: "#f1f5f9", border: "#d6dee9" },
+        font: { color: "rgba(100,116,139,.45)", size: 13 },
+        shadow: { enabled: false },
+      });
+    });
+
+    state.nodes.update(updates);
   }
 
   function highlightGraphDrug(drug) {
     if (!state.graphReady || !state.network || !drug) return;
 
     const selectedDrug = normalize(drug);
-    const connectedNodeIds = new Set(state.network.getConnectedNodes(selectedDrug));
-    const connectedEdgeIds = new Set(state.network.getConnectedEdges(selectedDrug));
+    if (!state.drugs.includes(selectedDrug)) return;
 
-    const nodeUpdates = state.drugs.map((nodeId) => {
-      if (nodeId === selectedDrug) {
-        return {
-          id: nodeId,
-          color: { background: COLORS.blue, border: COLORS.navy },
-          font: { color: COLORS.white, size: 17 },
-          shadow: { enabled: true, color: "rgba(0,79,159,.42)", size: 20, x: 0, y: 6 },
-        };
-      }
+    const results = getResultsForDrug(selectedDrug);
+    const relatedIds = new Set(results.map((row) => row.id));
 
-      if (connectedNodeIds.has(nodeId)) {
-        const edge = state.relationships.find((row) =>
-          (row.drug_a === selectedDrug && row.drug_b === nodeId) ||
-          (row.drug_b === selectedDrug && row.drug_a === nodeId)
-        );
-        const danger = edge && isDanger(edge);
-        return {
-          id: nodeId,
-          color: {
-            background: danger ? COLORS.redSoft : COLORS.greenSoft,
-            border: danger ? COLORS.red : COLORS.green,
-          },
-          font: { color: danger ? COLORS.red : COLORS.green, size: 15 },
-        };
-      }
-
-      return {
-        id: nodeId,
-        color: { background: "#f1f5f9", border: "#d6dee9" },
-        font: { color: "rgba(100,116,139,.45)", size: 14 },
-        shadow: { enabled: false },
-      };
-    });
+    layoutFocusGraph(selectedDrug, results);
 
     const edgeUpdates = state.relationships.map((row) => {
-      const connected = connectedEdgeIds.has(row.id);
+      const connected = relatedIds.has(row.id);
       const danger = isDanger(row);
       return {
         id: row.id,
         hidden: !connected,
-        width: connected ? (danger ? 4 : 2.6) : 1,
+        width: connected ? (danger ? 4.2 : 2.4) : 1,
+        color: {
+          color: danger ? COLORS.red : COLORS.green,
+          highlight: danger ? COLORS.red : COLORS.green,
+          hover: danger ? COLORS.red : COLORS.green,
+        },
+        smooth: { enabled: true, type: "curvedCW", roundness: danger ? 0.13 : 0.05 },
       };
     });
 
-    state.nodes.update(nodeUpdates);
     state.edges.update(edgeUpdates);
+    state.graphMode = "focus";
+    updateGraphModeHint("focus", selectedDrug);
     state.network.selectNodes([selectedDrug]);
-    state.network.focus(selectedDrug, {
-      scale: 1.2,
-      animation: { duration: 600, easingFunction: "easeInOutQuad" },
-    });
+    state.network.fit({ animation: { duration: 520, easingFunction: "easeInOutQuad" } });
   }
 
   function resetGraphHighlight() {
     if (!state.graphReady) return;
 
-    state.nodes.update(state.drugs.map((drug) => ({
-      id: drug,
-      color: {
-        background: "#f8fbff",
-        border: COLORS.blue,
-        highlight: { background: COLORS.blue, border: COLORS.navy },
-      },
-      font: { color: "#142033", size: 15 },
-      shadow: { enabled: true, color: "rgba(7,55,99,.16)", size: 12, x: 0, y: 4 },
-    })));
+    const radius = 460;
+    const dangerIds = getDangerRelationIds();
 
-    state.edges.update(state.relationships.map((row) => ({
-      id: row.id,
-      hidden: false,
-      width: isDanger(row) ? 3 : 1.6,
-    })));
+    state.nodes.update(state.drugs.map((drug, index) => {
+      const point = circlePoint(index, state.drugs.length, radius);
+      return {
+        id: drug,
+        x: point.x,
+        y: point.y,
+        fixed: true,
+        ...defaultNodeStyle(),
+      };
+    }));
 
+    state.edges.update(state.relationships.map((row) => {
+      const danger = dangerIds.has(row.id);
+      return {
+        id: row.id,
+        hidden: !danger,
+        width: danger ? 3.2 : 1.4,
+        color: {
+          color: danger ? COLORS.red : COLORS.green,
+          highlight: danger ? COLORS.red : COLORS.green,
+          hover: danger ? COLORS.red : COLORS.green,
+        },
+        smooth: { enabled: true, type: "dynamic", roundness: danger ? 0.18 : 0.08 },
+      };
+    }));
+
+    state.graphMode = "overview";
     state.network.unselectAll();
+    updateGraphModeHint("overview");
+    renderGraphInspector(null, []);
+    if (els.graphDrugSelect) els.graphDrugSelect.value = "";
+    if (els.graphSendToSearchBtn) els.graphSendToSearchBtn.disabled = true;
     state.network.fit({ animation: { duration: 450, easingFunction: "easeInOutQuad" } });
   }
 
@@ -721,7 +937,10 @@
     });
 
     if (view === "graph" && state.graphReady) {
-      window.setTimeout(() => state.network.redraw(), 50);
+      window.setTimeout(() => {
+        state.network.redraw();
+        state.network.fit({ animation: { duration: 350, easingFunction: "easeInOutQuad" } });
+      }, 60);
     }
 
     if (shouldScroll) {
@@ -754,6 +973,35 @@
     });
 
     els.resetGraphBtn.addEventListener("click", resetGraphHighlight);
+
+    if (els.overviewGraphBtn) {
+      els.overviewGraphBtn.addEventListener("click", resetGraphHighlight);
+    }
+
+    if (els.focusGraphBtn) {
+      els.focusGraphBtn.addEventListener("click", () => {
+        const drug = normalize(els.graphDrugSelect && els.graphDrugSelect.value);
+        if (!drug) {
+          showToast("โปรดเลือกชื่อยาใน graph");
+          return;
+        }
+        executeSearch(drug, { source: "graph", scrollResult: false, updateGraph: true, showGraph: false });
+      });
+    }
+
+    if (els.graphDrugSelect) {
+      els.graphDrugSelect.addEventListener("change", () => {
+        const drug = normalize(els.graphDrugSelect.value);
+        if (drug) executeSearch(drug, { source: "graph", scrollResult: false, updateGraph: true, showGraph: false });
+      });
+    }
+
+    if (els.graphSendToSearchBtn) {
+      els.graphSendToSearchBtn.addEventListener("click", () => {
+        if (!state.currentDrug) return;
+        els.resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
 
     document.querySelectorAll("[data-view-target]").forEach((button) => {
       button.addEventListener("click", () => showPanel(button.dataset.viewTarget));

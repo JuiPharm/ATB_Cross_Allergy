@@ -1,64 +1,46 @@
-# BHH Cross Allergy Checker — Premium UI v2
+# BHH Cross Allergy Checker - Premium Graph UX v3
 
-Static GitHub Pages web application for beta-lactam antibiotic cross-allergy screening support.
+Static GitHub Pages web application for beta-lactam antibiotic cross-allergy screening.
 
-## What changed in Premium UI v2
+## What changed in v3
 
-- Redesigned visual system with Bangkok Hospital style: navy / blue / red / white / gray.
-- Better clinical hierarchy: safety alert, search area, result cards, database, graph, reference.
-- Mobile-first responsive layout.
-- Table converts into mobile cards on small screens.
-- Improved search box, suggestions, buttons, badges, result cards, graph panel, and empty states.
-- Added accessible labels, skip link, focus states, and reduced-motion support.
-- Kept static JSON mode for GitHub Pages; no server required.
+- Reworked Graph as a **Clinical Focus Map** instead of a dense all-edge graph.
+- Overview mode now shows only `DO_NOT_PRESCRIBE` edges to reduce visual clutter.
+- Clicking a drug node keeps the user inside the Graph tab and opens a focus view.
+- Focus view places the selected drug at the center, red-risk drugs on the left, and considered-safe drugs on the right.
+- Added graph-side inspector with selected drug, risk counts, danger list, safe list, dropdown focus, and quick jump back to the result section.
+- Improved mobile responsiveness for the Graph control panel and canvas.
 
 ## Files to upload to GitHub
 
-Upload these files/folders to the repository root:
+Upload these files/folders to the root of your GitHub repository:
 
 ```text
 index.html
 .nojekyll
-README.md
 assets/
 data/
+README.md
 ```
 
-Optional if you want live Google Sheets / Apps Script later:
+`apps-script/` is optional and only needed if you later want to connect remote Google Sheets logging or an external API.
+
+## GitHub Pages deployment
+
+1. Go to your GitHub repository.
+2. Upload or replace the files above.
+3. Open **Settings → Pages**.
+4. Set source to **Deploy from a branch**.
+5. Select branch `main` and folder `/root`.
+6. Save and wait for GitHub Pages to rebuild.
+7. Open the GitHub Pages URL and hard refresh the browser with `Ctrl + F5`.
+
+## Data source
+
+The app reads data from:
 
 ```text
-apps-script/
+data/cross_allergy.json
 ```
 
-## Deploy to GitHub Pages
-
-1. Open your GitHub repository.
-2. Upload all files above to the repository root.
-3. Go to **Settings > Pages**.
-4. Source: **Deploy from a branch**.
-5. Branch: **main**.
-6. Folder: **/ root**.
-7. Click **Save**.
-8. Open the GitHub Pages URL after deployment finishes.
-
-## Data mode
-
-Default mode is static JSON:
-
-```js
-window.APP_CONFIG = {
-  USE_REMOTE_API: false,
-  LOCAL_DATA_URL: "data/cross_allergy.json"
-}
-```
-
-To use Google Apps Script later:
-
-1. Deploy `apps-script/Code.gs` as Apps Script Web App.
-2. Set `GAS_API_URL` in `assets/js/config.js`.
-3. Change `USE_REMOTE_API` to `true`.
-4. Set `ENABLE_REMOTE_LOGGING` to `true` only if you want to log searches remotely.
-
-## Clinical notice
-
-This tool is for medication safety screening support only. Final prescribing decisions must follow hospital policy and clinician/pharmacist judgment.
+No server is required for the main static version.

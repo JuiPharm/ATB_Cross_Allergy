@@ -209,24 +209,86 @@
       </section>
 
       <section class="tab-panel" id="view-graph" role="tabpanel">
-        <div class="toolbar">
+        <div class="toolbar graph-page-toolbar">
           <div>
-            <span class="section-kicker">Relationship map</span>
-            <h2>Graph ความสัมพันธ์</h2>
-            <p>คลิก node เพื่อดูความสัมพันธ์ของยานั้น ระบบจะ sync กับผลการตรวจสอบด้านบน</p>
+            <span class="section-kicker">Interactive focus map</span>
+            <h2>Graph ความสัมพันธ์แบบ Clinical Focus</h2>
+            <p>ค่าเริ่มต้นจะแสดงเฉพาะเส้นความเสี่ยงสูงเพื่อลดความรก คลิกชื่อยาเพื่อเข้าสู่ focus view และดูคู่ยาที่ห้ามใช้/ใช้ได้ในแผงด้านข้างทันที</p>
           </div>
           <div class="toolbar-controls">
+            <button class="btn btn-soft" id="overviewGraphBtn" type="button">Overview risk map</button>
             <button class="btn btn-soft" id="fitGraphBtn" type="button">Fit graph</button>
-            <button class="btn btn-soft" id="resetGraphBtn" type="button">Reset highlight</button>
+            <button class="btn btn-soft" id="resetGraphBtn" type="button">Reset</button>
           </div>
         </div>
-        <div id="graphContainer" class="graph-container">
-          <div class="graph-loading">กำลังเตรียม graph...</div>
-        </div>
-        <div class="legend-row">
-          <span><i class="legend-line danger-line" aria-hidden="true"></i> DO NOT PRESCRIBE</span>
-          <span><i class="legend-line safe-line" aria-hidden="true"></i> CONSIDERED SAFE</span>
-          <span><i class="legend-node" aria-hidden="true"></i> Selected drug</span>
+
+        <div class="graph-experience-shell">
+          <aside class="graph-control-panel" aria-label="Graph clinical inspector">
+            <div class="graph-picker-card">
+              <span class="section-kicker">Focus drug</span>
+              <h3>เลือกยาเพื่อดูความสัมพันธ์รอบตัว</h3>
+              <label for="graphDrugSelect">Drug name</label>
+              <div class="graph-picker-row">
+                <select id="graphDrugSelect" aria-label="เลือกชื่อยาใน graph"></select>
+                <button class="btn btn-primary" id="focusGraphBtn" type="button">Focus</button>
+              </div>
+              <p>เหมาะสำหรับ workflow จริง: เริ่มจากยาที่ผู้ป่วยแพ้ แล้วดู “ควรเลี่ยง” ก่อนเสมอ</p>
+            </div>
+
+            <div class="graph-inspector-card" id="graphInspectorCard">
+              <div class="inspector-header">
+                <span class="inspector-icon" aria-hidden="true">⌁</span>
+                <div>
+                  <small>Selected drug</small>
+                  <strong id="graphSelectedDrug">ยังไม่ได้เลือกยา</strong>
+                </div>
+              </div>
+              <p id="graphClinicalNote" class="graph-note">คลิก node หรือเลือกชื่อยาจาก dropdown เพื่อแสดงความสัมพันธ์แบบ focus view</p>
+              <div class="graph-score-row">
+                <div class="score danger">
+                  <span id="graphDangerCount">0</span>
+                  <small>DO NOT PRESCRIBE</small>
+                </div>
+                <div class="score safe">
+                  <span id="graphSafeCount">0</span>
+                  <small>CONSIDERED SAFE</small>
+                </div>
+              </div>
+              <button class="btn btn-soft" id="graphSendToSearchBtn" type="button" disabled>ดูผลตรวจสอบด้านบน</button>
+            </div>
+
+            <div class="graph-relation-list">
+              <div class="relation-list-header danger">
+                <strong>ควรหลีกเลี่ยง</strong>
+                <span>ลำดับแรก</span>
+              </div>
+              <div id="graphDangerList" class="mini-relation-list">
+                <div class="mini-empty">ยังไม่ได้เลือกยา</div>
+              </div>
+              <div class="relation-list-header safe">
+                <strong>ระบุว่าใช้ได้</strong>
+                <span>ต้องประเมินร่วมกับอาการแพ้จริง</span>
+              </div>
+              <div id="graphSafeList" class="mini-relation-list">
+                <div class="mini-empty">ยังไม่ได้เลือกยา</div>
+              </div>
+            </div>
+          </aside>
+
+          <div class="graph-canvas-panel">
+            <div class="graph-hint-bar" id="graphModeHint">
+              <strong>Overview risk map</strong>
+              <span>แสดงเฉพาะเส้น DO NOT PRESCRIBE เพื่อลด visual clutter จากคู่ความสัมพันธ์ทั้งหมด</span>
+            </div>
+            <div id="graphContainer" class="graph-container" aria-label="Antibiotic cross allergy graph">
+              <div class="graph-loading">กำลังเตรียม graph...</div>
+            </div>
+            <div class="legend-row graph-legend">
+              <span><i class="legend-line danger-line" aria-hidden="true"></i> DO NOT PRESCRIBE</span>
+              <span><i class="legend-line safe-line" aria-hidden="true"></i> CONSIDERED SAFE ใน focus view</span>
+              <span><i class="legend-node" aria-hidden="true"></i> Selected drug</span>
+            </div>
+          </div>
         </div>
       </section>
 
